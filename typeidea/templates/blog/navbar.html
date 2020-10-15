@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand navbar-dark shadow-sm" style="background-color: #34495E">
+    <div class="container">
+        <a class="navbar-brand mr-5" href="/">个人博客</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-5">
+                <li class="nav-item active mr-2">
+                    <a class="nav-link" href="/">首页</a>
+                </li>
+                <li class="nav-item active mr-2">
+                    <a class="nav-link" href="/">开源项目</a>
+                </li>
+
+                <li class="nav-item active mr-2">
+                    <a class="nav-link" href="/">导航</a>
+                </li>
+                <li class="nav-item active mr-2">
+                    <a class="nav-link" href="{% url 'girl' '1' %}">妹纸</a>
+                </li>
+
+                {% if  user.is_authenticated %}
+                    <li class="nav-item active text-right mr-2">
+                        <a class="nav-link" href="admin/blog/post/add/">新建文章</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <form action="/search" method="get" class="mr-auto">
+                <div class="input-group justify-content-center">
+                    <input class=" form-control form-control-sm" type="search" name="keyword"
+                           placeholder="站内搜索"
+                           aria-label="Search" value="{{ keyword }}">
+                    <div class="input-group-append">
+                        <input class="form-control form-control-sm" type="submit" value="搜索">
+                    </div>
+                </div>
+            </form>
+
+            <ul class="navbar-nav" style="margin-right: 100px">
+                {% if not user.is_authenticated %}
+                    <li class="nav-item active text-right">
+                        <a class="nav-link" href="{% url 'login' %}">登录</a>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'login' %}">{{ user.username }}</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'logout' %}">注销</a>
+                    </li>
+
+                {% endif %}
+            </ul>
+
+
+        </div>
+    </div>
+
+</nav>

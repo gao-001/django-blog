@@ -1,0 +1,80 @@
+{% extends './base.html' %}
+
+{% block title %}
+    {% if tag %}
+        标签名：{{ tag.name }}
+    {% elif category %}
+        分类名：{{ category.name }}
+    {% else %}
+        首页
+    {% endif %}
+
+
+{% endblock %}
+
+
+{% block main %}
+    {% for post in post_list %}
+        <div class="p-3 bg-white m-2">
+            <a class="h4 text-dark text-decoration-none m-1" href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
+            {% if post.desc %}
+                <p class="mt-1">{{ post.desc }}</p>
+            {% else %}
+                <p class="mt-1">{{ post.content_html |striptags|truncatechars:128 }}</p>
+            {% endif %}
+            <p class="text-muted">
+                作者：<a href="{% url 'author' post.owner_id %}">{{ post.owner.username }}</a>
+                分类：<a href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
+                发布：{{ post.created_time|date:"Y-m-d" }}</p>
+
+        </div>
+    {% endfor %}
+
+    {% if page_obj %}
+        <div class="text-center">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+            {% endif %}
+            Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+    <div class="col-4">
+        <div class="mt-3 card bg-secondary" style="width: 18rem">
+            <div class="card-header text-light font-weight-bold px-3">个人空间</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item">Cras justo odio</a>
+                <a class="list-group-item">Dapibus ac facilisis in</a>
+                <a class="list-group-item">Vestibulum at eros</a>
+            </div>
+        </div>
+
+
+        <div class="mt-3 card" style="width: 18rem">
+            <div class="card-header font-weight-bold px-3">文章分类</div>
+            <div class="list-group bg-white list-group-flush">
+                {% for cate in navs %}
+                    <a class="align-middle list-group-item list-group-item-action  align-items-center d-flex justify-content-between px-3 py-2 "
+                       href="{% url 'category-list' cate.id %}">{{ cate.name }}<span
+                            class="badge badge-info">{{ cate.post_set.count }}</span></a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mt-3 card bg-light" style="width: 18rem">
+            <div class="card-header font-weight-bold px-3">标签云</div>
+            <div class="card-body">
+                {% for tag in tags %}
+                    <a class="text-decoration-none font-italic bg-info text-white mr-2 p-1"
+                       href="{% url 'tag-list' tag.id %}">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
