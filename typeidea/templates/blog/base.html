@@ -4,32 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}首页{% endblock %} - Typeidea 博客系统</title>
-    <link rel="stylesheet" href="{% static 'bootstrap-4.5.0-dist/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'bootstrap-4.5.0-dist/css/bootstrap.css' %}" type="text/css">
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-light">
+<body style="background-image: url({% static 'image/darkness.png' %})">
 <!-- 导航栏 -->
 {% include './navbar.html' %}
 
 
 <div class="container mt-3">
 
-    <div class="row">
-        <div class="col">
-            {% block main %}
-            {% endblock %}
-        </div>
+    {% block main %}
+    {% endblock %}
 
-        {% block sidebar %}
-        {% endblock %}
-    </div>
-
+</div>
+<div>
 
     <hr class="mt-3"/>
-    <footer class="mt-4">
+    <footer class="mt-4 text-muted">
         <div class="card-body text-center">
+            <p class="card-text">基于Python3.6+Gunicorn+Nginx+Supervisor构建</p>
             <p class="card-text mb-1">Copyright&nbsp;&copy;&nbsp;<span id="year-info"></span>
-                <a href="https://github.com/Hopetree" target="_blank" >Gao</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
+                <a href="https://github.com/gao-001" target="_blank">Gao</a>.&nbsp;Powered&nbsp;by&nbsp;Django,bootstrap4
             </p>
         </div>
     </footer>
@@ -46,4 +42,4 @@
         crossorigin="anonymous"></script>
 
 
-<script src="{% static 'bootstrap-4.5.0-dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap-4.5.0-dist/js/bootstrap.js' %}"></script>

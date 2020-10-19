@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,re_path,include
+from django.views.generic import TemplateView
 from .custom_site import custom_site
 from .views import girl,login_view,logout_view
 from blog.views import (IndexView,CategoryView,TagView,PostDatailView,SearchView,AuthorView,new_comment)
+from django.views.decorators.cache import cache_page
 
 from django.conf.urls.static import static
 from django.conf import settings
@@ -51,8 +53,10 @@ urlpatterns = [
     path('api/',include(router.urls),name='api'),
     path('api/docs/',include_docs_urls(title='typeidea apis')),
     path('rss',LastPostFeed(),name='rss'),
-    path('sitemap.xml',sitemap_views.sitemap,{'sitemaps':{'posts':PostSitemap}})
-
+    path('sitemap.xml',cache_page(60*20,key_prefix='sitemap_cache_')(sitemap_views.sitemap),{'sitemaps':{'posts':PostSitemap}}),
+    path('project/',TemplateView.as_view(template_name='project.html'),name='project'),
+    path('navigation/',TemplateView.as_view(template_name='navigation.html'),name='navigation'),
+    path('about/',TemplateView.as_view(template_name='about.html'),name='about'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

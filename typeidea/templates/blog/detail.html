@@ -17,51 +17,54 @@
 
 {% block main %}
     {% if post %}
-        <h3 class="h3 font-weight-bold text-decoration-none">{{ post.title }}</h3>
-        <hr class="my-1"/>
+        <div class="bg-light p-3 rounded">
+            <div>
+                <h3 class="h3 font-weight-bold text-decoration-none">{{ post.title }}</h3>
+                <hr class="my-1"/>
 
-        <p class="text-muted">
-            作者：<a class="mr-2" href="{% url 'author' post.owner_id %}">{{ post.owner.username }}</a>
-            分类：<a class="mr-2" href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
-            发布：{{ post.created_time|date:"Y-m-d" }}
-        </p>
-        <div class="text-muted my-3">
-            {% autoescape off %}
-                {{ post.desc }}
-            {% endautoescape %}
-        </div>
-        <div class="overflow-auto">
-            {% autoescape off %}
-                {{ post.content_html }}
-            {% endautoescape %}
-        </div>
-
-
-
-        <div class="mt-5">
-            <h4>评论</h4>
-            <form class="form-group mt-2" method="post" action="/comment" style="width: 50%">
-                {% csrf_token %}
-                <input name="post_id" value="{{ post.id }}" type="hidden">
-                <div class="input-group">
-                    {{ comment_form.content }}
-                    <div class="input-group-append">
-                        <button type="submit" class="btn  btn-info btn-sm">写好了</button>
-                    </div>
+                <p class="text-muted">
+                    作者：<a class="mr-2" href="{% url 'author' post.owner_id %}">{{ post.owner.username }}</a>
+                    分类：<a class="mr-2" href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
+                    发布：{{ post.created_time|date:"Y-m-d" }}
+                </p>
+                <div class="text-muted my-3">
+                    {% autoescape off %}
+                        {{ post.desc }}
+                    {% endautoescape %}
                 </div>
-            </form>
+                <div class="overflow-auto">
+                    {% autoescape off %}
+                        {{ post.content_html }}
+                    {% endautoescape %}
+                </div>
+            </div>
 
 
-            <ul class="list-group list-unstyled">
+            <div class="mt-5">
+                <h4>评论</h4>
+                <form class="form-group mt-2" method="post" action="/comment" style="width: 50%">
+                    {% csrf_token %}
+                    <input name="post_id" value="{{ post.id }}" type="hidden">
+                    <div class="input-group">
+                        {{ comment_form.content }}
+                        <div class="input-group-append">
+                            <button type="submit" class="btn  btn-info btn-sm">写好了</button>
+                        </div>
+                    </div>
+                </form>
 
-                {% for comment in comments %}
-                    <li class="ml-2">
-                        {% autoescape off %}
-                            {{ comment.content }}
-                        {% endautoescape %}
-                    </li>
-                {% endfor %}
-            </ul>
+
+                <ul class="list-group list-unstyled">
+
+                    {% for comment in comments %}
+                        <li class="ml-2">
+                            {% autoescape off %}
+                                {{ comment.content }}
+                            {% endautoescape %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     {% endif %}
 {% endblock %}

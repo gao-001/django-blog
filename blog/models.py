@@ -95,7 +95,7 @@ class Post(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        self.content_html = mistune.markdown(self.content)
+        self.content_html = mistune.markdown(self.content,escape=False)
         super(Post, self).save()
 
     @classmethod

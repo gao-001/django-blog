@@ -1,0 +1,53 @@
+{% extends './blog/base.html' %}
+{% block main %}
+    <div class="bg-light p-3 rounded">
+    <h4>
+        关于网站
+    </h4>
+        <hr/>
+    <ul>
+        <li>本网站是一个个人博客网站，主要分享博主的编程学习心得</li>
+        <li>本网站主要使用django+mysql+nginx搭建</li>
+        <li>目前网站的功能还不齐全，后续会继续补齐</li>
+        <li>网站基于《Django企业开发实战》构建，也参考了一些别人的博客网站构建前端页面如
+        <a href="https://tendcode.com/about/">tencode</a>, <a href="https://www.the5fire.com/">the5fire</a>(Django企业开发的作者） </li>
+    </ul>
+    <h4>
+        关于博主
+    </h4>
+        <hr/>
+    <ul>
+        <li>Python技能树：Django/Flask的web框架</li>
+        <li>前端技能树：写过vue项目，了解基本用法，熟悉Html基本规范，对css常规手法了解，熟悉bootstra4框架</li>
+        <li>Github地址：https://github.com/gao-001</li>
+
+    </ul>
+    <h4>功能介绍</h4>
+        <hr/>
+    <ul>
+        <li>Django 自带的后台管理系统，方便对于文章、用户及其他动态内容的管理</li>
+        <li>文章评论系统,支持 markdown 语法</li>
+        <li>站内搜索功能</li>
+        <li>RESTful API 风格的 API 接口</li>
+    </ul>
+    <h4>
+        待实现功能
+    </h4>
+        <hr/>
+    <ul>
+        <li>头像上传并裁减功能</li>
+        <li>用户注册功能</li>
+        <li>...</li>
+    </ul>
+
+    <h4>网站支持</h4>
+        <hr/>
+    <ul>
+        <li>前端使用Bootstrap4支持响应式</li>
+        <li>后端Python3.6,django2.2+</li>
+        <li>后台数据库使用Mysql，缓存数据库使用Redis</li>
+        <li>使用 django restframework 支持的 RESTful 风格的 API 接口</li>
+    </ul>
+
+    </div>
+{% endblock %}

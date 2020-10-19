@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+   # 'django.middleware.cache.UpdateCacheMiddleware',
     'blog.middleware.user_id.UserIDMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -116,9 +117,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+'''STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-]
+]'''
 
 MDEDITOR_CONFIGS = {
     'default': {
@@ -126,7 +128,7 @@ MDEDITOR_CONFIGS = {
         'heigth': 500,  # Custom edit box height
         'toolbar': ["undo", "redo", "|",
                     "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
-                    "h1", "h2", "h3", "h5", "h6", "|",
+                    "h1", "h2", "h3", "h4","h5", "h6", "|",
                     "list-ul", "list-ol", "hr", "|",
                     "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime"
                                                                                                            "emoji",
@@ -157,3 +159,33 @@ REST_FRAMEWORK = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+
+ALLOWED_HOSTS =['www.gaocode.top','127.0.0.1']
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'blog_database',
+        'USER': 'root',
+        'PASSWORD': 'Nchu011230',
+        'HOST': '127.0.0.1',
+        'POST': 3306,
+        'CONN_MAX_AGE':5*60,
+        'OPTIONS':{'charset':'utf8mb4'},
+    }
+}
+
+REDIS_URL = 'redis://127.0.0.1:6379/1'
+CACHES = {
+    'default':{
+        'BACKEND':'django_redis.cache.RedisCache',
+        'LOCATION':REDIS_URL,
+        'TIMEOUT':300,
+        'OPTIONS':{
+            #'PASSWORD':'1234'
+            'CLIENT_CLASS':'django_redis.client.DefaultClient',
+            'PARSER_CLASS':'redis.connection.HiredisParser',
+        },
+        'CONNECTION_POOL_CLASS':'redis.connection.BlockingConnectionPool'
+    }
+}

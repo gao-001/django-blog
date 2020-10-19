@@ -14,65 +14,107 @@
 
 
 {% block main %}
-    {% for post in post_list %}
-        <div class="p-3 bg-white m-2">
-            <a class="h4 text-dark text-decoration-none m-1" href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
-            {% if post.desc %}
-                <p class="mt-1">{{ post.desc }}</p>
-            {% else %}
-                <p class="mt-1">{{ post.content_html |striptags|truncatechars:128 }}</p>
-            {% endif %}
-            <p class="text-muted">
-                作者：<a href="{% url 'author' post.owner_id %}">{{ post.owner.username }}</a>
-                分类：<a href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
-                发布：{{ post.created_time|date:"Y-m-d" }}</p>
+    <div class="nav justify-content-between">
+        {% for cate in navs %}
+            <li class="nav-item"><a class="nav-link h5 text-light font-italic"
+                                    href="{% url 'category-list' cate.id %}">{{ cate.name }}</a></li>
+        {% endfor %}
+    </div>
 
-        </div>
-    {% endfor %}
 
-    {% if page_obj %}
-        <div class="text-center">
-            {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
-            {% endif %}
-            Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">下一页</a>
-            {% endif %}
-        </div>
-    {% endif %}
-{% endblock %}
+    <div class="row">
+        <div class="col mr-3 ">
+            <div class="jumbotron">
+                <h1 class="display-4">Hello word!</h1>
 
-{% block sidebar %}
-    <div class="col-4">
-        <div class="mt-3 card bg-secondary" style="width: 18rem">
-            <div class="card-header text-light font-weight-bold px-3">个人空间</div>
-            <div class="list-group list-group-flush">
-                <a class="list-group-item">Cras justo odio</a>
-                <a class="list-group-item">Dapibus ac facilisis in</a>
-                <a class="list-group-item">Vestibulum at eros</a>
             </div>
+            {% for post in post_list %}
+                <div class="p-3  mt-3  bg-light rounded">
+                    <a class="h3 text-dark text-decoration-none"
+                       href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
+                    <hr class="my-1"/>
+                    <p class="text-muted">
+                        作者：<a href="{% url 'author' post.owner_id %}">{{ post.owner.username }}</a>
+                        分类：<a href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a>
+                        发布：{{ post.created_time|date:"Y-m-d" }}</p>
+                    {% if post.desc %}
+                        <p class="mt-1">{{ post.desc }}</p>
+                    {% else %}
+                        <p class="mt-1">{{ post.content_html |striptags|truncatechars:233 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            {% if page_obj %}
+                <div class="text-center mt-3 text-muted">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+                    {% endif %}
+                    第 {{ page_obj.number }} / {{ paginator.num_pages }} 页.
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
 
+        <div class="col-4  rounded">
+            <form action="/search" method="get" style="width: 18rem" class="mt-3">
+                <div class="input-group justify-content-center">
+                    <input class=" form-control" type="search" name="keyword"
+                           placeholder="站内搜索"
+                           aria-label="Search" value="{{ keyword }}">
+                    <div class="input-group-append">
+                        <input class="form-control bg-primary text-light" type="submit" value="搜索">
+                    </div>
+                </div>
+            </form>
+            <div class="mt-3 card bg-light" style="width: 18rem">
+                <div class="card-header text-dark font-weight-bold px-3">个人空间</div>
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-warning px-3 py-2"
+                       href="https://github.com/gao-001">Github地址</a>
+                    <a class="list-group-item list-group-item-action list-group-item-primary px-3 py-2"
+                       href="http://www.gaocode.top:8080/#/">Vue项目</a>
+                    <a class="list-group-item list-group-item-action list-group-item-info px-3 py-2"
+                       href="http://www.gaocode.top">Flask博客</a>
 
-        <div class="mt-3 card" style="width: 18rem">
-            <div class="card-header font-weight-bold px-3">文章分类</div>
-            <div class="list-group bg-white list-group-flush">
-                {% for cate in navs %}
-                    <a class="align-middle list-group-item list-group-item-action  align-items-center d-flex justify-content-between px-3 py-2 "
-                       href="{% url 'category-list' cate.id %}">{{ cate.name }}<span
-                            class="badge badge-info">{{ cate.post_set.count }}</span></a>
-                {% endfor %}
+                </div>
             </div>
-        </div>
 
-        <div class="mt-3 card bg-light" style="width: 18rem">
-            <div class="card-header font-weight-bold px-3">标签云</div>
-            <div class="card-body">
-                {% for tag in tags %}
-                    <a class="text-decoration-none font-italic bg-info text-white mr-2 p-1"
-                       href="{% url 'tag-list' tag.id %}">{{ tag.name }}</a>
-                {% endfor %}
+
+            <div class="mt-3 card bg-light" style="width: 18rem">
+                <div class="card-header font-weight-bold px-3">文章分类</div>
+                <div class="list-group bg-white list-group-flush">
+                    {% for cate in navs %}
+                        <a class="list-group-item list-group-item-action list-group-item-danger d-flex justify-content-between px-3 py-2 "
+                           href="{% url 'category-list' cate.id %}">{{ cate.name }}<span
+                                class="badge badge-info">{{ cate.post_set.count }}</span></a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="my-3 card bg-light" style="width: 18rem">
+                <div class="card-header font-weight-bold px-3">标签云</div>
+                <div class="card-body">
+                    {% for tag in tags %}
+                        <a class="text-decoration-none font-italic bg-info text-white mr-2 p-1"
+                           href="{% url 'tag-list' tag.id %}">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="my-3 card bg-light" style="width: 18rem">
+                <div class="card-header font-weight-bold px-3">最热文章</div>
+                <div class="card-body">
+
+                </div>
+            </div>
+
+            <div class="my-3 card bg-light" style="width: 18rem">
+                <div class="card-header font-weight-bold px-3">最新文章</div>
+                <div class="card-body">
+
+                </div>
             </div>
         </div>
 
